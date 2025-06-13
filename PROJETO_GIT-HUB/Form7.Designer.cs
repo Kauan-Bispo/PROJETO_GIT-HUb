@@ -31,11 +31,12 @@
             label1 = new Label();
             textBox1 = new TextBox();
             btBuscar = new Button();
-            listView1 = new ListView();
             label2 = new Label();
             label3 = new Label();
-            listView2 = new ListView();
             label4 = new Label();
+            listBox1 = new ListBox();
+            listBox2 = new ListBox();
+            label5 = new Label();
             SuspendLayout();
             // 
             // label1
@@ -62,14 +63,7 @@
             btBuscar.TabIndex = 2;
             btBuscar.Text = "BUSCAR CLIENTE";
             btBuscar.UseVisualStyleBackColor = true;
-            // 
-            // listView1
-            // 
-            listView1.Location = new Point(368, 65);
-            listView1.Name = "listView1";
-            listView1.Size = new Size(218, 195);
-            listView1.TabIndex = 3;
-            listView1.UseCompatibleStateImageBehavior = false;
+            btBuscar.Click += btBuscar_Click;
             // 
             // label2
             // 
@@ -89,14 +83,6 @@
             label3.TabIndex = 5;
             label3.Text = "ITENS";
             // 
-            // listView2
-            // 
-            listView2.Location = new Point(66, 223);
-            listView2.Name = "listView2";
-            listView2.Size = new Size(218, 195);
-            listView2.TabIndex = 6;
-            listView2.UseCompatibleStateImageBehavior = false;
-            // 
             // label4
             // 
             label4.AutoSize = true;
@@ -106,16 +92,42 @@
             label4.TabIndex = 7;
             label4.Text = "TOTAL:";
             // 
+            // listBox1
+            // 
+            listBox1.FormattingEnabled = true;
+            listBox1.Location = new Point(360, 65);
+            listBox1.Name = "listBox1";
+            listBox1.Size = new Size(187, 154);
+            listBox1.TabIndex = 8;
+            // 
+            // listBox2
+            // 
+            listBox2.FormattingEnabled = true;
+            listBox2.Location = new Point(47, 233);
+            listBox2.Name = "listBox2";
+            listBox2.Size = new Size(159, 139);
+            listBox2.TabIndex = 9;
+            // 
+            // label5
+            // 
+            label5.AutoSize = true;
+            label5.Location = new Point(24, 89);
+            label5.Name = "label5";
+            label5.Size = new Size(42, 15);
+            label5.TabIndex = 10;
+            label5.Text = "NOME";
+            // 
             // FrmConsulta
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(800, 450);
+            Controls.Add(label5);
+            Controls.Add(listBox2);
+            Controls.Add(listBox1);
             Controls.Add(label4);
-            Controls.Add(listView2);
             Controls.Add(label3);
             Controls.Add(label2);
-            Controls.Add(listView1);
             Controls.Add(btBuscar);
             Controls.Add(textBox1);
             Controls.Add(label1);
@@ -130,10 +142,11 @@
         private Label label1;
         private TextBox textBox1;
         private Button btBuscar;
-        private ListView listView1;
         private Label label2;
         private Label label3;
-        private ListView listView2;
         private Label label4;
+        private ListBox listBox1;
+        private ListBox listBox2;
+        private Label label5;
     }
 }

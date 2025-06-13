@@ -39,8 +39,8 @@ namespace PROJETO_GIT_HUB
 
         private void button2_Click(object sender, EventArgs e)
         {
-            string codPedido = txtCodPedido.Text.Trim();
-            string cpf = txtCpfCliente.Text.Trim();
+            string codPedido = textBox1.Text.Trim();
+            string cpf = textBox2.Text.Trim();
 
             if (codPedido == "" || cpf == "" || itensPedido.Count == 0) return;
 

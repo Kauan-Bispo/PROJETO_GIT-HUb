@@ -8,6 +8,9 @@ using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Net.Http;
+
+
 
 namespace PROJETO_GIT_HUB
 {
@@ -33,20 +36,41 @@ namespace PROJETO_GIT_HUB
             string cep = textBox3.Text.Trim();
             using (HttpClient client = new HttpClient())
             {
-                var response = await client.GetAsync($"https://viacep.com.br/ws/{cep}/json/");
-                if (response.IsSuccessStatusCode)
-                {
-                    var json = await response.Content.ReadAsStringAsync();
-                    dynamic endereco = JsonConvert.DeserializeObject(json);
 
-                    textBox5.Text = endereco.logradouro;
-                    textBox7.Text = endereco.bairro;
-                    textBox9.Text = endereco.localidade;
-                    textBox10.Text = endereco.uf;
+            }
+        }
+        private async Task BuscarEnderecoPorCep(string cep)
+        {
+            using (HttpClient client = new HttpClient())
+            {
+                try
+                {
+                    string url = $"https://viacep.com.br/ws/{cep}/json/";
+                    string resposta = await client.GetStringAsync(url);
+
+                    if (resposta.Contains("\"erro\": true"))
+                    {
+                        MessageBox.Show("CEP não encontrado.");
+                        return;
+                    }
+
+                    string logradouro = ExtrairCampo(resposta, "logradouro");
+                    string bairro = ExtrairCampo(resposta, "bairro");
+                    string cidade = ExtrairCampo(resposta, "localidade");
+                    string estado = ExtrairCampo(resposta, "uf");
+
+                    textBox5.Text = logradouro;
+                    textBox7.Text = bairro;
+                    textBox9.Text = cidade;
+                    textBox10.Text = estado;
+                }
+                catch
+                {
+                    MessageBox.Show("Erro ao consultar o CEP.");
                 }
             }
         }
-    
+
 
         private void button3_Click(object sender, EventArgs e)
         {
@@ -69,6 +93,24 @@ namespace PROJETO_GIT_HUB
             File.WriteAllLines("clientes.csv", linhas);
             MessageBox.Show("Cliente salvo com sucesso.");
         }
+
+
+
+
+
+
+        private string ExtrairCampo(string json, string campo)
+        {
+            string chave = $"\"{campo}\":";
+            int inicio = json.IndexOf(chave) + chave.Length;
+
+            if (inicio < chave.Length)
+                return "";
+
+            int aspasInicio = json.IndexOf('"', inicio) + 1;
+            int aspasFim = json.IndexOf('"', aspasInicio);
+            return json.Substring(aspasInicio, aspasFim - aspasInicio);
+        }
     }
 }
-
+    
