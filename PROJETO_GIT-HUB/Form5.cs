@@ -12,6 +12,9 @@ namespace PROJETO_GIT_HUB
 {
     public partial class FrmProdutos : Form
     {
+        string = caminhoProduto = @"C:\Users\Usuario\OneDrive\Documentos";
+     
+    
         public FrmProdutos()
         {
             InitializeComponent();
@@ -30,47 +33,70 @@ namespace PROJETO_GIT_HUB
             string precoStr = textBox2.Text.Trim();
             string descricao = textBox3.Text.Trim();
 
-            if (codigo == "" || nome == "" || precoStr == "")
-                return;
-
-            if (!decimal.TryParse(precoStr, out decimal preco))
-                return;
-
-            Produto produto = new Produto
+            if (string.IsNullOrEmpty(codigo) || string.IsNullOrEmpty(nome) || string.IsNullOrEmpty(precoStr))
             {
-                Codigo = codigo,
-                Nome = nome,
-                Preco = preco,
-                Descricao = descricao
-            };
-
-            if (File.Exists(caminhoArquivo))
-            {
-                var linhas = File.ReadAllLines(caminhoArquivo);
-                foreach (var linha in linhas)
-                {
-                    var dados = linha.Split(';');
-                    if (dados[0] == codigo)
-                        return;
-                }
+                MessageBox.Show("Preencha Código, Nome e Preço.");
+                return;
             }
 
-            File.AppendAllText(caminhoArquivo, produto.ToString() + Environment.NewLine);
-            LimparCampos();
+            if (!decimal.TryParse(precoStr, out decimal preco))
+            {
+                MessageBox.Show("Preço inválido.");
+                return;
+            }
+
+            var linhas = File.ReadAllLines(caminhoProduto).ToList();
+
+            bool existe = linhas.Any(l => l.StartsWith(codigo + ";"));
+
+            if (existe)
+            {
+                MessageBox.Show("Código já cadastrado.");
+                return;
+            }
+
+            string novaLinha = $"{codigo};{nome};{preco};{descricao}";
+
+            linhas.Add(novaLinha);
+
+            File.WriteAllLines(caminhoProduto, linhas);
+
+            MessageBox.Show("Produto cadastrado com sucesso.");
+            
             CarregarProdutos();
+            LimparCampos();
+
+
 
         }
         private void CarregarProdutos()
         {
             listBox1.Items.Clear();
 
-            if (!File.Exists(caminhoArquivo))
+            if (!File.Exists(caminhoProduto))
+            {
+                File.WriteAllText(caminhoProduto, "Codigo;Nome;Preco;Descricao\n");
                 return;
+            }
 
-            var linhas = File.ReadAllLines(caminhoArquivo);
+            var linhas = File.ReadAllLines(caminhoProduto).Skip(1);
+
             foreach (var linha in linhas)
-                listBox1.Items.Add(linha);
+            {
+                var dados = linha.Split(';');
+                if (dados.Length == 4)
+                {
+                    var item = new ListViewItem(dados[0]);
+                    item.SubItems.Add(dados[1]);
+                    item.SubItems.Add(dados[2]);
+                    item.SubItems.Add(dados[3]);
+                    listBox1.Items.Add(item);
+
+
+                }
+            }
         }
+        
 
         private void LimparCampos()
         {
@@ -82,31 +108,7 @@ namespace PROJETO_GIT_HUB
 
         private void btEditar_Click(object sender, EventArgs e)
         {
-            string codigo = textBox4.Text.Trim();
-            string nome = textBox1.Text.Trim();
-            string precoStr = textBox2.Text.Trim();
-            string descricao = textBox3.Text.Trim();
-
-            if (!decimal.TryParse(precoStr, out decimal preco))
-                return;
-
-            if (!File.Exists(caminhoArquivo))
-                return;
-
-            var linhas = File.ReadAllLines(caminhoArquivo).ToList();
-            for (int i = 0; i < linhas.Count; i++)
-            {
-                var dados = linhas[i].Split(';');
-                if (dados[0] == codigo)
-                {
-                    linhas[i] = $"{codigo};{nome};{preco};{descricao}";
-                    break;
-                }
-            }
-
-            File.WriteAllLines(caminhoArquivo, linhas);
-            LimparCampos();
-            CarregarProdutos();
+            
 
         }
 
@@ -114,12 +116,12 @@ namespace PROJETO_GIT_HUB
         {
             string codigo = textBox4.Text.Trim();
 
-            if (!File.Exists(caminhoArquivo))
+            if (!File.Exists(caminhoProduto))
                 return;
 
-            var linhas = File.ReadAllLines(caminhoArquivo).ToList();
+            var linhas = File.ReadAllLines(caminhoProduto).ToList();
             linhas = linhas.Where(l => l.Split(';')[0] != codigo).ToList();
-            File.WriteAllLines(caminhoArquivo, linhas);
+            File.WriteAllLines(caminhoProduto, linhas);
 
             LimparCampos();
             CarregarProdutos();

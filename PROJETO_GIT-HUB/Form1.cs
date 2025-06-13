@@ -2,6 +2,7 @@ namespace PROJETO_GIT_HUB
 {
     public partial class frmLogin : Form
     {
+        string CaminhoUsuario = @"C:\Users\Usuario\OneDrive\Documentos";
         public frmLogin()
         {
             InitializeComponent();
@@ -19,20 +20,18 @@ namespace PROJETO_GIT_HUB
 
             if (usuario == "ADMIN" && senha == "123")
             {
-                frmMenuPrincipal(usuario).Show();
-                this.Hide();
-                return;
+                
             }
 
-            if (File.Exists("usuarios.csv"))
+            if (File.Exists("caminhoUsuario"))
             {
-                var linhas = File.ReadAllLines("usuarios.csv");
+                var linhas = File.ReadAllLines("caminhoUsuario");
                 foreach (var linha in linhas)
                 {
                     var dados = linha.Split(',');
                     if (dados[0] == usuario && dados[1] == senha)
                     {
-                        new FrmMenu(usuario).Show();
+                        new frmMenuPrincipal(usuario).Show();
                         this.Hide();
                         return;
                     }

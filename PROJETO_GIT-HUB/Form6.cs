@@ -54,7 +54,7 @@ namespace PROJETO_GIT_HUB
             }
 
             MessageBox.Show("Pedido salvo com sucesso!");
-            LimparCampos();
+            
 
         }
 

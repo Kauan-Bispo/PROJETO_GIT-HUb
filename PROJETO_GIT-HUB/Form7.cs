@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.Drawing.Text;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -12,6 +13,9 @@ namespace PROJETO_GIT_HUB
 {
     public partial class FrmConsulta : Form
     {
+        private string caminho pedidos = @"C:\Users\Usuario\OneDrive\Documento";
+        private string caminho itenspedidos = @"C:\Users\Usuario\OneDrive\Documentos";
+
         public FrmConsulta()
         {
             InitializeComponent();
@@ -26,12 +30,12 @@ namespace PROJETO_GIT_HUB
 
         private void CarregarProdutos()
         {
-            if (!File.Exists(arquivoProdutos)) return;
+            if (!File.Exists(caminho pedidos)) return;
 
-            produtos.Clear();
-            comboBox1.Items.Clear();
+            listBox2.Items.Clear();
+            listBox1.Items.Clear();
 
-            var linhas = File.ReadAllLines(arquivoProdutos);
+            var linhas = File.ReadAllLines(caminho pedios);
             foreach (var linha in linhas)
             {
                 var dados = linha.Split(';');
@@ -39,17 +43,17 @@ namespace PROJETO_GIT_HUB
                 string nome = dados[1];
                 decimal preco = decimal.Parse(dados[2]);
 
-                produtos[codigo] = (nome, preco);
-                cmbProdutos.Items.Add($"{codigo} - {nome} - R$ {preco}");
+                listBox2.[codigo] = (nome, preco);
+                listBox1.Items.Add($"{codigo} - {nome} - R$ {preco}");
             }
         }
 
         private void btBuscar_Click(object sender, EventArgs e)
         {
             string cpf = textBox1.Text.Trim();
-            if (!File.Exists(arquivoClientes)) return;
+            if (!File.Exists(caminho pedidos)) return;
 
-            var linhas = File.ReadAllLines(arquivoClientes);
+            var linhas = File.ReadAllLines(caminho pedidos);
             foreach (var linha in linhas)
             {
                 var dados = linha.Split(';');

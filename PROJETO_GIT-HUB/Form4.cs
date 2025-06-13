@@ -16,6 +16,11 @@ namespace PROJETO_GIT_HUB
 {
     public partial class Form4 : Form
     {
+        private string Caminhoclientes = @"C:\Users\Usuario\OneDrive\Documentos";
+    
+
+        
+        
         public Form4()
         {
             InitializeComponent();
